@@ -63,12 +63,4 @@ Each notebook is designed to be self-contained, providing clear instructions and
 
 ---
 
-## Getting Started
-
-To run the example notebooks:
-
-1. Open Jupyter Notebook or JupyterLab.
-2. Navigate to the `examples` directory.
-3. Launch any notebook to explore its features.
-
 These notebooks serve as practical guides, enabling hands-on experimentation with the `file-processing` suite.
