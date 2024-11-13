@@ -23,11 +23,11 @@ Libraries in the File Processing Suite
 .. toctree::
    :maxdepth: 2
 
-   libs/file_processing/index
-   libs/file_processing_ocr/index
-   libs/file_processing_transcription/index
-   libs/file_processing_analytics/index
-   libs/file_processing_test_data/index
+   libs/file-processing/modules
+   libs/file-processing-ocr/modules
+   libs/file-processing-transcription/modules
+   libs/file-processing-analytics/modules
+   libs/file-processing-test-data/modules
 
 Indices and tables
 ==================

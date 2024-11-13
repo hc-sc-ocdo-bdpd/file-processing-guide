@@ -6,4 +6,3 @@ file-processing
 
    file_processing
    setup
-   tests

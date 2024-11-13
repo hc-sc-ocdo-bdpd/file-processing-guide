@@ -1,5 +1,5 @@
 Getting Started with the File Processing Suite
-=============================================
+==============================================
 
 Installation
 ------------

@@ -12,12 +12,18 @@ release = '1.0'
 
 # -- General configuration ---------------------------------------------------
 
-# Add paths here for modules that Sphinx will document after cloning
-sys.path.insert(0, os.path.abspath('../temp_repos/file-processing'))
-sys.path.insert(0, os.path.abspath('../temp_repos/file-processing-ocr'))
-sys.path.insert(0, os.path.abspath('../temp_repos/file-processing-transcription'))
-sys.path.insert(0, os.path.abspath('../temp_repos/file-processing-analytics'))
-sys.path.insert(0, os.path.abspath('../temp_repos/file-processing-test-data'))
+# Determine the directory containing conf.py
+conf_dir = os.path.dirname(os.path.abspath(__file__))
+
+# The temp_repos directory is relative to conf.py
+temp_repos_dir = os.path.abspath(os.path.join(conf_dir, '..', 'temp_repos'))
+
+# Add paths to the sys.path
+sys.path.insert(0, os.path.join(temp_repos_dir, 'file-processing'))
+sys.path.insert(0, os.path.join(temp_repos_dir, 'file-processing-ocr'))
+sys.path.insert(0, os.path.join(temp_repos_dir, 'file-processing-transcription'))
+sys.path.insert(0, os.path.join(temp_repos_dir, 'file-processing-analytics'))
+sys.path.insert(0, os.path.join(temp_repos_dir, 'file-processing-test-data'))
 
 extensions = [
     'sphinx.ext.autodoc',           # Automatically documents modules
@@ -37,7 +43,7 @@ napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 
 # Exclude unnecessary files or directories (like tests or setup scripts)
-exclude_patterns = ['**/tests/**', '**/setup.py']
+exclude_patterns = ['**/tests/**', '**/setup.py', '**/setup.rst', '**/conf.py', '**/build/**', '**/temp_repos/**']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

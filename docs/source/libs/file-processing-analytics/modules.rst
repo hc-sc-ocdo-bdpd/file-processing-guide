@@ -6,4 +6,3 @@ file-processing-analytics
 
    file_processing_analytics
    setup
-   tests
