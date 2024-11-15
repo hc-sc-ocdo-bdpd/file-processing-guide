@@ -43,7 +43,7 @@ napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 
 # Exclude unnecessary files or directories (like tests or setup scripts)
-exclude_patterns = ['**/tests/**', '**/setup.py', '**/setup.rst', '**/conf.py', '**/build/**', '**/temp_repos/**']
+exclude_patterns = ['**/tests/**', '**/setup.py', '**/setup.rst', '**/conf.py', '**/build/**', '**/temp_repos/**', '_modules/tests/*']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

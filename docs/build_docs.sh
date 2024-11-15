@@ -13,13 +13,17 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
+DOCS_DEPLOY="$SCRIPT_DIR"
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
 
+# Clean up previous build and temp directory
+echo "Cleaning previous build..."
+rm -rf "$DOCS_BUILD" "$TEMP_DIR"
+
 # Create necessary directories
-mkdir -p "$TEMP_DIR"
-mkdir -p "$DOCS_SOURCE/libs"
+mkdir -p "$TEMP_DIR" "$DOCS_BUILD" "$DOCS_SOURCE/libs"
 
 # Clone the libraries
 echo "Cloning libraries..."
@@ -29,10 +33,7 @@ git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-transcription.git "
 git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-analytics.git "$TEMP_DIR/file-processing-analytics"
 git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-test-data.git "$TEMP_DIR/file-processing-test-data"
 
-# Generate API documentation for each library
-echo "Generating API documentation..."
-
-# Function to generate documentation for a library
+# Function to generate API documentation for a library
 generate_docs() {
     LIB_NAME=$1
     SOURCE_DIR="$TEMP_DIR/$LIB_NAME"
@@ -43,8 +44,8 @@ generate_docs() {
     # Create output directory
     mkdir -p "$OUTPUT_DIR"
 
-    # Use positional arguments for exclude patterns
-    sphinx-apidoc -o "$OUTPUT_DIR" "$SOURCE_DIR" "setup.py" "tests/*" "*/tests/*" --force
+    # Generate API docs, excluding setup.py and test directories
+    sphinx-apidoc -o "$OUTPUT_DIR" "$SOURCE_DIR" "setup.py" "tests/*" "*/tests/*" "**/tests/*" --force
 
     # Check if sphinx-apidoc succeeded
     if [ $? -ne 0 ]; then
@@ -53,7 +54,7 @@ generate_docs() {
     fi
 }
 
-# Generate docs for each library
+# Generate API documentation for each library
 generate_docs "file-processing"
 generate_docs "file-processing-ocr"
 generate_docs "file-processing-transcription"
@@ -61,16 +62,18 @@ generate_docs "file-processing-analytics"
 generate_docs "file-processing-test-data"
 
 # Build the documentation using Sphinx
-echo "Building documentation..."
+echo "Building HTML documentation with Sphinx..."
 python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_BUILD"
 
-# Check if sphinx build succeeded
-if [ $? -ne 0 ]; then
-    echo "Error: Sphinx build failed"
-    exit 1
-fi
+# Fix issues with deployment
+echo "Preparing directories for deployment..."
+rm -rf "$DOCS_DEPLOY/index.html" "$DOCS_DEPLOY/_static" "$DOCS_DEPLOY/_sources" "$DOCS_DEPLOY/_modules" "$DOCS_DEPLOY/libs"
 
-# Clean up the temporary directory
+# Deploy build artifacts to the root of /docs
+echo "Deploying built HTML files to /docs..."
+mv "$DOCS_BUILD"/* "$DOCS_DEPLOY/"
+
+# Clean up temporary files
 echo "Cleaning up..."
 rm -rf "$TEMP_DIR"
 

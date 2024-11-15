@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 dist/
 develop-eggs/
 downloads/
@@ -66,20 +65,33 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+# Temporary files and directories
+*.bak
+*.tmp
+*.log
+*.swp
+.DS_Store
+
+# Temporary repositories for Sphinx builds
+temp_repos/
+
+# Sphinx documentation build artifacts
 docs/_build/
-docs/build/  # Legacy build directory to avoid confusion
 docs/_static/
 docs/_templates/
-temp_repos/  # Temporary directory for cloned repositories during documentation builds
-
-# Documentation output for GitHub Pages
-# Uncomment this if you decide to host in the root branch/docs structure
-# /docs/_build/html
-
-# PyBuilder
-.pybuilder/
-target/
+docs/_sources/
+docs/_modules/
+docs/libs/
+docs/build/
+docs/build/**
+docs/build/html/
+docs/build/html/**
+docs/build/html/.doctrees/
+docs/build/html/.doctrees/**
+docs/searchindex.js
+docs/objects.inv
+docs/*.html
+docs/**/*.html
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -111,10 +123,7 @@ venv.bak/
 site/
 
 # Miscellaneous
-*.bak
-*.tmp
-*.log
-.DS_Store
+Thumbs.db
 
 # GitHub Actions caches and log files (optional)
 .github/workflows/cache/
