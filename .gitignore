@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-dist/
 build/
 develop-eggs/
 downloads/
@@ -20,7 +19,6 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -39,8 +37,8 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*.cover
-*.py,cover
+*,cover
+.py,cover
 .hypothesis/
 .pytest_cache/
 cover/
@@ -65,22 +63,11 @@ instance/
 # Sphinx documentation build artifacts
 docs/_build/
 docs/build/
-docs/build/**
-docs/build/html/
-docs/build/html/**
-docs/build/html/.doctrees/
-docs/build/html/.doctrees/**
-docs/_modules/
-docs/_modules/**
-docs/searchindex.js
-docs/objects.inv
+docs/source/
+docs/temp_repos/
 
-# Ignore HTML files in docs/
-docs/*.html
-docs/**/*.html
-
-# Temporary repositories for Sphinx builds
-temp_repos/
+# Ignore built documentation in the main branch
+# We will not commit built HTML files to the main branch
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -111,9 +98,7 @@ venv.bak/
 *.csv
 
 # IDE settings and caches
-# PyCharm and other JetBrains IDEs
 .idea/
-# VSCode settings
 .vscode/
 
 # MkDocs (if used alongside Sphinx)
