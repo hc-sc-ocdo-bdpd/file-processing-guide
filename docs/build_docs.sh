@@ -13,6 +13,7 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
+DOCS_DEPLOY="$SCRIPT_DIR"  # Deploy to the root of /docs
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
@@ -64,8 +65,12 @@ generate_docs "file-processing-test-data"
 echo "Building HTML documentation with Sphinx..."
 python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_BUILD"
 
+# Deploy build artifacts to the root of /docs
+echo "Deploying built HTML files to /docs..."
+rsync -av --delete "$DOCS_BUILD"/ "$DOCS_DEPLOY"/
+
 # Clean up temporary files
 echo "Cleaning up..."
 rm -rf "$TEMP_DIR"
 
-echo "Documentation build completed successfully!"
+echo "Documentation build and deployment completed successfully!"
