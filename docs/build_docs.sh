@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Enable debug mode (comment out if not needed)
+# Enable debug mode (optional, comment out if not needed)
 set -x
 
 # Get the absolute path to the script's directory
@@ -13,7 +13,7 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
-DOCS_DEPLOY="$SCRIPT_DIR"  # Deploy to the root of /docs
+DOCS_DEPLOY="$SCRIPT_DIR"
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
@@ -65,12 +65,16 @@ generate_docs "file-processing-test-data"
 echo "Building HTML documentation with Sphinx..."
 python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_BUILD"
 
+# Fix issues with deployment
+echo "Preparing directories for deployment..."
+rm -rf "$DOCS_DEPLOY/index.html" "$DOCS_DEPLOY/_static" "$DOCS_DEPLOY/_sources" "$DOCS_DEPLOY/_modules" "$DOCS_DEPLOY/libs"
+
 # Deploy build artifacts to the root of /docs
 echo "Deploying built HTML files to /docs..."
-rsync -av --delete "$DOCS_BUILD"/ "$DOCS_DEPLOY"/
+mv "$DOCS_BUILD"/* "$DOCS_DEPLOY/"
 
 # Clean up temporary files
 echo "Cleaning up..."
 rm -rf "$TEMP_DIR"
 
-echo "Documentation build and deployment completed successfully!"
+echo "Documentation build completed successfully!"

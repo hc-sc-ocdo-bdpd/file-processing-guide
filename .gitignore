@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$$py.class
+*$py.class
 
 # C extensions
 *.so
@@ -9,7 +9,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 dist/
-build/
 develop-eggs/
 downloads/
 eggs/
@@ -25,6 +24,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
 
 # Installer logs
 pip-log.txt
@@ -62,14 +65,33 @@ instance/
 # Scrapy stuff:
 .scrapy
 
+# Temporary files and directories
+*.bak
+*.tmp
+*.log
+*.swp
+.DS_Store
+
+# Temporary repositories for Sphinx builds
+temp_repos/
+
 # Sphinx documentation build artifacts
 docs/_build/
+docs/_static/
+docs/_templates/
+docs/_sources/
+docs/_modules/
+docs/libs/
 docs/build/
-docs/source/
-
-# Ignore temporary repositories for Sphinx builds
-docs/temp_repos/
-docs/temp_repos/**
+docs/build/**
+docs/build/html/
+docs/build/html/**
+docs/build/html/.doctrees/
+docs/build/html/.doctrees/**
+docs/searchindex.js
+docs/objects.inv
+docs/*.html
+docs/**/*.html
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -77,14 +99,6 @@ docs/temp_repos/**
 # IPython
 profile_default/
 ipython_config.py
-
-# Temporary files and directories
-*.bak
-*.tmp
-*.log
-*.swp
-.DS_Store
-Thumbs.db
 
 # Environment files
 .env
@@ -100,7 +114,9 @@ venv.bak/
 *.csv
 
 # IDE settings and caches
+# PyCharm and other JetBrains IDEs
 .idea/
+# VSCode settings
 .vscode/
 
 # MkDocs (if used alongside Sphinx)
