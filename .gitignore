@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 dist/
+build/
 develop-eggs/
 downloads/
 eggs/
@@ -24,10 +25,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
 
 # Installer logs
 pip-log.txt
@@ -65,33 +62,25 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Temporary files and directories
-*.bak
-*.tmp
-*.log
-*.swp
-.DS_Store
-
-# Temporary repositories for Sphinx builds
-temp_repos/
-
 # Sphinx documentation build artifacts
 docs/_build/
-docs/_static/
-docs/_templates/
-docs/_sources/
-docs/_modules/
-docs/libs/
 docs/build/
 docs/build/**
 docs/build/html/
 docs/build/html/**
 docs/build/html/.doctrees/
 docs/build/html/.doctrees/**
+docs/_modules/
+docs/_modules/**
 docs/searchindex.js
 docs/objects.inv
+
+# Ignore HTML files in docs/
 docs/*.html
 docs/**/*.html
+
+# Temporary repositories for Sphinx builds
+temp_repos/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -99,6 +88,14 @@ docs/**/*.html
 # IPython
 profile_default/
 ipython_config.py
+
+# Temporary files and directories
+*.bak
+*.tmp
+*.log
+*.swp
+.DS_Store
+Thumbs.db
 
 # Environment files
 .env
