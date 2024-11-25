@@ -77,4 +77,4 @@ mv "$DOCS_BUILD"/* "$DOCS_DEPLOY/"
 echo "Cleaning up..."
 rm -rf "$TEMP_DIR"
 
-echo "Documentation build completed successfully!
+echo "Documentation build completed successfully!"
