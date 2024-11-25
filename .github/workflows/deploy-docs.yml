@@ -1,7 +1,6 @@
 name: Build and Deploy Documentation
 
 on:
-  # Trigger the workflow on pushes to the 'main' branch or manual dispatch
   push:
     branches:
       - main
@@ -13,9 +12,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false  # We'll set up authentication separately
+        uses: actions/checkout@v3  # Removed persist-credentials: false
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -39,9 +36,9 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Commit and Push Changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add docs/
           git diff --cached --exit-code --quiet && echo "No changes to commit" || git commit -m "Update documentation [skip ci]"
-          git push origin main
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
