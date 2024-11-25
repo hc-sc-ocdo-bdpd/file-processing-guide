@@ -13,17 +13,17 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
-DOCS_DEPLOY="$SCRIPT_DIR"
+DOCS_DEPLOY="$SCRIPT_DIR/../docs"  # Deploy to /docs directory
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
 
 # Clean up previous build and temp directory
 echo "Cleaning previous build..."
-rm -rf "$DOCS_BUILD" "$TEMP_DIR"
+rm -rf "$DOCS_BUILD" "$TEMP_DIR" "$DOCS_DEPLOY"
 
 # Create necessary directories
-mkdir -p "$TEMP_DIR" "$DOCS_BUILD" "$DOCS_SOURCE/libs"
+mkdir -p "$TEMP_DIR" "$DOCS_BUILD" "$DOCS_SOURCE/libs" "$DOCS_DEPLOY"
 
 # Clone the libraries
 echo "Cloning libraries..."
@@ -65,16 +65,12 @@ generate_docs "file-processing-test-data"
 echo "Building HTML documentation with Sphinx..."
 python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_BUILD"
 
-# Fix issues with deployment
-echo "Preparing directories for deployment..."
-rm -rf "$DOCS_DEPLOY/index.html" "$DOCS_DEPLOY/_static" "$DOCS_DEPLOY/_sources" "$DOCS_DEPLOY/_modules" "$DOCS_DEPLOY/libs"
-
-# Deploy build artifacts to the root of /docs
+# Deploy build artifacts to the /docs directory
 echo "Deploying built HTML files to /docs..."
-mv "$DOCS_BUILD"/* "$DOCS_DEPLOY/"
+cp -r "$DOCS_BUILD"/* "$DOCS_DEPLOY/"
 
 # Clean up temporary files
 echo "Cleaning up..."
-rm -rf "$TEMP_DIR"
+rm -rf "$TEMP_DIR" "$DOCS_BUILD" "$DOCS_SOURCE/libs"
 
-echo "Documentation build completed successfully!"
+echo "Documentation build and deployment completed successfully!"
