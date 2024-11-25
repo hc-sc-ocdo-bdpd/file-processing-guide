@@ -7,17 +7,15 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write      # Allows the action to deploy to GitHub Pages
-  id-token: write   # Required for authentication
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # We'll set up authentication separately
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -35,18 +33,15 @@ jobs:
       - name: Run Build Script
         run: ./docs/build_docs.sh
 
-      # Upload the generated site to be deployed
-      - name: Upload artifact for deployment
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: docs/build/html  # Path to your generated HTML files
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # Allows the action to deploy to GitHub Pages
-      id-token: write   # Required for authentication
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+      - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add docs/
+          git diff --cached --exit-code --quiet && echo "No changes to commit" || git commit -m "Update documentation [skip ci]"
+          git push origin main
