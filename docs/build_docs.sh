@@ -8,12 +8,13 @@ set -x
 
 # Get the absolute path to the script's directory
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+REPO_ROOT="$SCRIPT_DIR/.."  # Adjust this if your script is not in a subdirectory
 
 # Set up paths relative to the script directory
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
-DOCS_DEPLOY="$SCRIPT_DIR/../docs"  # Deploy to /docs directory
+DOCS_DEPLOY="$REPO_ROOT/docs"  # Deploy to /docs directory at the root of your repository
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
