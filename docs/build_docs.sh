@@ -3,21 +3,42 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Enable debug mode (optional, comment out if not needed)
-set -x
+# Enable debug mode (commented out to prevent sensitive info leakage)
+# set -x
 
-# Get the absolute path to the script's directory
+# Get the absolute path to the script's directory and the repository root
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-REPO_ROOT="$SCRIPT_DIR/.."  # Adjust this if your script is not in a subdirectory
+REPO_ROOT="$SCRIPT_DIR/.."
 
 # Set up paths relative to the script directory
 TEMP_DIR="$SCRIPT_DIR/temp_repos"
 DOCS_SOURCE="$SCRIPT_DIR/source"
 DOCS_BUILD="$SCRIPT_DIR/build/html"
-DOCS_DEPLOY="$REPO_ROOT/docs"  # Deploy to /docs directory at the root of your repository
+DOCS_DEPLOY="$REPO_ROOT/docs"
 
 # Increase Git buffer size to prevent clone errors on large repositories
 git config --global http.postBuffer 524288000
+
+# Get GitHub token from environment variable
+# Use PERSONAL_ACCESS_TOKEN if provided; else use GITHUB_TOKEN
+GITHUB_TOKEN="${PERSONAL_ACCESS_TOKEN:-${GITHUB_TOKEN}}"
+
+# Function to clone a repository using a token
+clone_repo() {
+    REPO_URL=$1
+    DEST_DIR=$2
+    if [ -n "$GITHUB_TOKEN" ]; then
+        # Extract the host from the REPO_URL
+        REPO_HOST=$(echo "$REPO_URL" | awk -F/ '{print $3}')
+        # Construct authenticated URL
+        AUTH_REPO_URL="https://${GITHUB_TOKEN}@${REPO_HOST}/${REPO_URL#*//$REPO_HOST/}"
+        # Clone using the authenticated URL
+        git clone "$AUTH_REPO_URL" "$DEST_DIR"
+    else
+        # Clone without authentication
+        git clone "$REPO_URL" "$DEST_DIR"
+    fi
+}
 
 # Clean up previous build and temp directory
 echo "Cleaning previous build..."
@@ -28,11 +49,11 @@ mkdir -p "$TEMP_DIR" "$DOCS_BUILD" "$DOCS_SOURCE/libs" "$DOCS_DEPLOY"
 
 # Clone the libraries
 echo "Cloning libraries..."
-git clone https://github.com/hc-sc-ocdo-bdpd/file-processing.git "$TEMP_DIR/file-processing"
-git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-ocr.git "$TEMP_DIR/file-processing-ocr"
-git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-transcription.git "$TEMP_DIR/file-processing-transcription"
-git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-analytics.git "$TEMP_DIR/file-processing-analytics"
-git clone https://github.com/hc-sc-ocdo-bdpd/file-processing-test-data.git "$TEMP_DIR/file-processing-test-data"
+clone_repo https://github.com/hc-sc-ocdo-bdpd/file-processing.git "$TEMP_DIR/file-processing"
+clone_repo https://github.com/hc-sc-ocdo-bdpd/file-processing-ocr.git "$TEMP_DIR/file-processing-ocr"
+clone_repo https://github.com/hc-sc-ocdo-bdpd/file-processing-transcription.git "$TEMP_DIR/file-processing-transcription"
+clone_repo https://github.com/hc-sc-ocdo-bdpd/file-processing-analytics.git "$TEMP_DIR/file-processing-analytics"
+clone_repo https://github.com/hc-sc-ocdo-bdpd/file-processing-test-data.git "$TEMP_DIR/file-processing-test-data"
 
 # Function to generate API documentation for a library
 generate_docs() {
