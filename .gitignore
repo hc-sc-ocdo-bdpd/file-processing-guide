@@ -73,25 +73,8 @@ instance/
 .DS_Store
 
 # Temporary repositories for Sphinx builds
-temp_repos/
-
-# Sphinx documentation build artifacts
-docs/_build/
-docs/_static/
-docs/_templates/
-docs/_sources/
-docs/_modules/
-docs/libs/
-docs/build/
-docs/build/**
-docs/build/html/
-docs/build/html/**
-docs/build/html/.doctrees/
-docs/build/html/.doctrees/**
-docs/searchindex.js
-docs/objects.inv
-docs/*.html
-docs/**/*.html
+docs/temp_repos/
+docs/source/libs/
 
 # Jupyter Notebook
 .ipynb_checkpoints
