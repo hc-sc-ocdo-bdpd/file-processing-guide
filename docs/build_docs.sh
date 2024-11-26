@@ -3,21 +3,21 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Get the absolute path to the 'docs' directory
-DOCS_DIR=$(cd "$(dirname "$0")" && pwd)
+# Get the absolute path to the repository root
+REPO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
-# Set up paths relative to the 'docs' directory
-TEMP_DIR="$DOCS_DIR/temp_repos"
-DOCS_SOURCE="$DOCS_DIR/source"
-DOCS_BUILD="$DOCS_DIR/build/html"
+# Define paths
+TEMP_DIR="$REPO_ROOT/temp_repos"
+DOCS_DIR="$REPO_ROOT/docs"
+DOCS_SOURCE="$REPO_ROOT/sphinx_source"
 LIBS_SOURCE="$DOCS_SOURCE/libs"
 
 # Clean up previous build and temp directories
 echo "Cleaning previous build..."
-rm -rf "$DOCS_BUILD" "$TEMP_DIR" "$LIBS_SOURCE"
+rm -rf "$DOCS_DIR/"*.html "$DOCS_DIR/"*.js "$DOCS_DIR/"*.css "$DOCS_DIR/_static" "$DOCS_DIR/_sources" "$TEMP_DIR" "$LIBS_SOURCE"
 
 # Create necessary directories
-mkdir -p "$TEMP_DIR" "$DOCS_BUILD" "$LIBS_SOURCE"
+mkdir -p "$TEMP_DIR" "$LIBS_SOURCE"
 
 # List of repositories to clone and document
 declare -A REPOSITORIES=(
@@ -62,7 +62,7 @@ done
 
 # Build the documentation using Sphinx
 echo "Building HTML documentation with Sphinx..."
-python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_BUILD"
+python -m sphinx -b html "$DOCS_SOURCE" "$DOCS_DIR"
 
 # Clean up temporary files
 echo "Cleaning up temporary files..."
