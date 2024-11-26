@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Removed persist-credentials: false
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -25,15 +25,18 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Make Build Script Executable
-        run: chmod +x ./build_docs.sh
+        run: chmod +x ./docs/build_docs.sh
 
       - name: Run Build Script
-        run: ./build_docs.sh
+        run: ./docs/build_docs.sh
 
-      - name: Commit and Push Changes
+      - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+      - name: Commit and Push Changes
+        run: |
           git add docs/
           git diff --cached --exit-code --quiet && echo "No changes to commit" || git commit -m "Update documentation [skip ci]"
           git push
